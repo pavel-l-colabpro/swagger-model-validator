@@ -60,6 +60,58 @@ module.exports.validatorTests = {
 
         test.done();
     },
+    allowNullablePropertiesToBeNull: function(test) {
+        var data = {
+            id: 1,
+            count: null
+        };
+        var model = {
+            properties: {
+                id: {
+                    type: 'number',
+                    description: 'The object id'
+                },
+                count: {
+                    type: 'number',
+                    description: 'A number',
+                    nullable: true
+                }
+            }
+        };
+
+        var errors = validator.validate(data, model);
+
+        test.expect(1);
+        test.ok(errors.valid);
+
+        test.done();
+    },
+    allowNullableFalseProperties: function(test) {
+        var data = {
+            id: 1,
+            count: null
+        };
+        var model = {
+            properties: {
+                id: {
+                    type: 'number',
+                    description: 'The object id'
+                },
+                count: {
+                    type: 'number',
+                    description: 'A number',
+                    nullable: false
+                }
+            }
+        };
+
+        var errors = validator.validate(data, model);
+
+        test.expect(1);
+        test.ok(!errors.valid);
+
+        test.done();
+    },
     allowNullableRequiredPropertiesToBeNull: function(test) {
         var data = {
             id: 1,
@@ -223,7 +275,7 @@ module.exports.validatorTests = {
     Issue81DefinitionTest: function(test) {
         var data = {
             name: 'zzz',
-            some: null
+            some: undefined
         };
 
         var model = {
